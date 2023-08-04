@@ -1,0 +1,38 @@
+version: "3.3"
+services:
+  db:
+    image: "postgres:14.8"
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./var/data:/var/lib/postgresql/data
+  sql-setup:
+    depends_on:
+      - db
+    build:
+      context: ./sql-setup
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_URL=postgres://postgres:postgres@db:5432/postgres
+  server:
+    ports:
+    - "8000:8000"
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    volumes:
+      - ./var/log:/var/log
+    environment:
+      - POSTGRES_URI=postgres://postgres:postgres@db:5432/postgres
+      - JWT_ACCESS_SECRET_KEY=access-secret
+      - JWT_REFRESH_SECRET_KEY=refresh-secret
+      - LOG_LEVEL=DEBUG
+      
