@@ -7,23 +7,23 @@ from .token import token
 bp = Blueprint('auth', __name__)
 
 routes = [
-    (login, {
+    (login.__name__, login, {
         "methods": [
             "POST"
         ]
     }),
-    (signup, {
+    (signup.__name__, signup, {
         "methods": [
             "POST"
         ]
     }),
-    (token, {
+    (token.__name__, token, {
         "methods": [
             "GET"
         ]
     }),
 ]
 
-for route, options in routes:
-    bp.add_url_rule(f"/{route.__name__}", route.__name__, route, **options)
+for path, route, options in routes:   
+    bp.add_url_rule(f"/{path}", f"{route.__module__}{route.__name__}".replace(".", "-"), route, **options)
 

@@ -5,13 +5,13 @@ from .index import event
 bp = Blueprint('event', __name__)
 
 routes = [
-    (event, {
+    ("", event, {
         "methods": [
             "POST"
         ]
     }),
 ]
 
-for route, options in routes:
-    bp.add_url_rule(f"/{route.__name__}", route.__name__, route, **options)
+for path, route, options in routes:   
+    bp.add_url_rule(f"/{path}", f"{route.__module__}{route.__name__}".replace(".", "-"), route, **options)
 
