@@ -3,12 +3,23 @@ import traceback
 from db.queries import create_user
 from authorization.token import Token, generate_token
 
+
 def signup():
+    """Endpoint function to sign up a user.
+
+    This endpoint function will collect the email, password, first name, and
+    last name from the request and creates a user has valid credentials.
+    If valid, the user will receive an access and refresh token for further use.
+
+    Returns:
+        A 2-length tuple containing response information.
+            [0] (dict): The body payload. Refresh and access tokens on success, message on failure.
+            [1] (int): The HTTP response code assocaited with the request.
+
+    """
 
     if request.method == "POST":
-
         try:
-
             payload = request.get_json()
 
             email = payload["email"]
@@ -26,7 +37,8 @@ def signup():
                     "refresh_token": refresh_token,
                 }, 201
 
-        except Exception as e:
-            return traceback.format_exc(), 500
+            return {"message": f"User already exists with email {email}"}, 401
 
-        return {"message": "success"}, 201
+        # TODO: Handle less generically, user will receive traceback on error.
+        except Exception:
+            return traceback.format_exc(), 500

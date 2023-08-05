@@ -2,14 +2,15 @@ from logger import logger
 from flask import Flask
 from routes import blueprints
 
-def create_app():
 
+def create_app():
     app = Flask(__name__)
 
     for bp, prefix in blueprints:
         app.register_blueprint(bp, url_prefix=prefix)
 
     return app
+
 
 if __name__ == "__main__":
     app = create_app()

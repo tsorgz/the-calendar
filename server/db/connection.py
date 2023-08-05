@@ -1,13 +1,13 @@
 import os
 import psycopg2
 
+
 def get_psql_info():
-    """
-    Retrieves a PostgreSQL connection.
+    """Retrieves a PostgreSQL connection.
 
     Reads in PostgreSQL connection details via environment variables.
     """
-    conn_string = os.getenv('POSTGRES_URI')
+    conn_string = os.getenv("POSTGRES_URI")
     conn_string = conn_string.replace("postgres://", "")
     parts = conn_string.split("@")
     auth = parts[0].split(":")
@@ -20,11 +20,7 @@ def get_psql_info():
     database = port_db[1]
 
     psql_conn = psycopg2.connect(
-        dbname=database,
-        user=username,
-        password=password,
-        host=host,
-        port=port
+        dbname=database, user=username, password=password, host=host, port=port
     )
 
     psql_cursor = psql_conn.cursor()
