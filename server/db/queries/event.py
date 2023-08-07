@@ -47,6 +47,8 @@ def create_event(
     if not has_tz:
         end_dt = apply_tz_to_datetime(end_dt, set_tz)
 
+    # TODO: Logic to make sure start_dt < end_dt
+
     event_id = str(uuid4())
 
     fields = ["id", "organizer", "title", "start_time", "end_time"]
