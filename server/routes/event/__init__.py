@@ -5,7 +5,7 @@ from .index import event
 bp = Blueprint("event", __name__)
 
 routes = [
-    ("", event, {"methods": ["POST"]}),
+    ("", event, {"methods": ["GET", "POST"]}),
 ]
 
 # TODO: Logic repeated in __init__.py files in route, should create utility function for

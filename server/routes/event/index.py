@@ -1,18 +1,24 @@
-from flask import request
+from flask import request, jsonify
 from flasgger import swag_from
 from authorization.wrapper import requires_auth
-from db.queries import create_event
+from db.queries import create_event, get_event
 import traceback
 
-@swag_from("/server/apidocs/event/index.yml")
+
+@swag_from("/server/apidocs/event/index_post.yml", methods=["POST"])
+@swag_from("/server/apidocs/event/index_get.yml", methods=["GET"])
 @requires_auth
 def event(user_id: str):
-    """Endpoint function to create an event associated with the user.
+    """Endpoint function to create an event or retrieve events associated with the user.
 
-    This endpoint function will collect the user id, start time, end time,
+    This POST method endpoint function will collect the user id, start time, end time,
     and title for an event being created in the database. Optionally, a description
     and location for the event can be sent with the request, as well as a timezone
     override for timezone-naive timestamps passed through.
+
+    This GET method endpoint function will get a certain amount of events (up to 100)
+    and return those events associated with the user through pagination, using arguments
+    page for the offset and size for the payload amount.
 
     Args:
         user_id (str): The user ID associated with the access token.
@@ -60,6 +66,22 @@ def event(user_id: str):
             )
 
             return {"event_id": event_id}, 201
+
+        # TODO: Handle less generically, user will receive a traceback on error
+        except Exception:
+            return traceback.print_exc(), 500
+
+    elif request.method == "GET":
+
+        page = int(request.args.get("page", 0))
+        size = max(min(int(request.args.get("size", 20)), 100), 0)
+
+        try:
+            events = get_event(user_id=user_id, page=page, size=size)
+
+            if events:
+                return jsonify(events), 200
+            return {"message": "No events found with associated user"}, 204
 
         # TODO: Handle less generically, user will receive a traceback on error
         except Exception:

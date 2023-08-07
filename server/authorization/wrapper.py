@@ -24,17 +24,22 @@ def requires_auth(func):
 
     @wraps(func)
     def decorator(*args, **kwargs):
-        token_header = request.headers.get("Authorization")
+        try:
+            token_header = request.headers.get("Authorization")
 
-        if not token_header:
-            return {"message": "Token missing."}, 403
+            if not token_header:
+                return {"message": "Token missing."}, 403
 
-        token = token_header.split(" ")[1]
-        is_valid, uid, message = verify_token(token, mode=Token.ACCESS)
+            token = token_header.split(" ")[1]
+            is_valid, uid, message = verify_token(token, mode=Token.ACCESS)
 
-        if is_valid:
-            return func(uid, *args, **kwargs)
+            if is_valid:
+                return func(uid, *args, **kwargs)
 
-        return {"message": message}, 403
+            return {"message": message}, 403
+        except Exception:
+            import traceback
+
+            return traceback.format_exc(), 500
 
     return decorator

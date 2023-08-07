@@ -1,6 +1,7 @@
 import jwt
 import os
 from datetime import datetime, timedelta
+from logger import logger
 
 
 class TokenType:
@@ -110,6 +111,7 @@ def verify_token(token: str, mode: TokenType = Token.ACCESS):
 
     """
     payload = None
+    logger.debug(f"Verifying: {token=}, {mode.signature=}")
     try:
         payload = jwt.decode(token, mode.signature, algorithms=["HS256"])
     except jwt.ExpiredSignatureError:

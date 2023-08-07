@@ -1,0 +1,50 @@
+summary: Get Events
+description: Retrieves all events for a given user
+consumes:
+  - application/json
+produces:
+  - application/json
+security:
+  - Bearer: []
+parameters:
+  - name: page
+    in: query
+    description: The page numer of the events, essentially setting the offset as page * size
+    type: integer
+  - name: size
+    in: query
+    description: The size of the payload, determining how many events are returned
+    type: integer
+    minimum: 0
+    maximum: 100
+responses:
+  200:
+    description: Created
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          title:
+            type: string
+          start_time: 
+            type: string
+          end_time:
+            type: string
+          description:
+            type: string
+          location:
+            type: string
+          created_at:
+            type: string
+          updated_at:
+            type: string
+  204:
+    description: No Content
+  500:
+    description: Error
+    schema:
+      type: string
+

@@ -3,6 +3,7 @@ from flasgger import swag_from
 from jwt.exceptions import InvalidSignatureError
 from authorization.token import refresh_token
 
+
 @swag_from("/server/apidocs/auth/token.yml")
 def token():
     """Endpoint function to request a new access token.

@@ -1,5 +1,6 @@
 from uuid import uuid4
-
+from datetime import datetime
+from logger import logger
 from events.utils import apply_tz_to_datetime, parse_timestamp_info
 from geolocation.ip import get_information_from_ip
 from db import get_psql_info
@@ -82,3 +83,60 @@ def create_event(
         return traceback.format_exc()
 
     return event_id
+
+
+def get_event(user_id: str, page: int = 0, size: int = 20):
+    """Retrieves events with an associated user.
+
+    This function retrieves a certain number of events (up to 100) from the database, and
+    formats it for proper response formatting.
+
+    Args:
+        user_id (str): The user ID associated with the event.
+        page (int): The offset, determined with size parameter, of the elements returned from the database.
+        size (int): The number of entries returned from the database.
+
+    Returns:
+        A list of events based on the size and offset requested, which can be empty.
+    """
+
+    logger.info(f"Getting events for {user_id=}, {page=}, {size=}")
+    results = []
+    fields = [
+        "id",
+        "title",
+        "start_time",
+        "end_time",
+        "description",
+        "location",
+        "created_at",
+        "updated_at",
+    ]
+
+    connection, cursor = get_psql_info()
+    sql = "SELECT {} from events WHERE organizer = %s ORDER BY start_time DESC, end_time DESC LIMIT %s OFFSET %s".format(
+        ",".join(fields)
+    )
+
+    cursor.execute(sql, (user_id, size, page * size))
+    response = cursor.fetchall()
+
+    for row in response:
+
+        entry = {}
+        for idx, key in enumerate(fields):
+            if row[idx] == None:
+                continue
+            # TODO: serializer in utils, this will be reuired on every datetime object
+            if isinstance(row[idx], datetime):
+                entry[key] = row[idx].isoformat()
+            else:
+                entry[key] = row[idx]
+        results.append(entry)
+
+    cursor.close()
+    connection.close()
+
+    logger.info(f"Returning {len(results)} events for {user_id=}")
+
+    return results
