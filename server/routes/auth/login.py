@@ -1,10 +1,11 @@
 import traceback
 
 from flask import request
+from flasgger import swag_from
 from db.queries import get_user_login
 from authorization.token import Token, generate_token
 
-
+@swag_from("/server/apidocs/auth/login.yml")
 def login():
     """Endpoint function to log in a user.
 

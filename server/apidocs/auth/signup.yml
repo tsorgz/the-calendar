@@ -1,0 +1,57 @@
+summary: Sign Up User
+description: Creates a new user
+consumes:
+  - application/json
+produces:
+  - application/json
+parameters:
+  - name: user
+    in: body
+    description: The user being created
+    schema:
+      type: object
+      properties:
+        email: 
+          type: string
+          description: The email associated with the new user
+          example: example@the-calendar.io
+        password: 
+          type: string
+          description: The password associated with the newly created user
+          example: "password1234"
+        first_name: 
+          type: string
+          description: The first name associated with the newly created user
+          example: TJ
+        last_name: 
+          type: string
+          description: The last name associated with the newly created user
+          example: Soregaroli
+      required:
+        - email
+        - password
+        - first_name
+        - last_name
+responses:
+  201:
+    description: Created
+    schema:
+      type: object
+      properties:
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+  409:
+    description: Conflict
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+  
+  500:
+    description: Error
+    schema:
+      type: string
+

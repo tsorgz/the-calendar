@@ -1,0 +1,46 @@
+summary: Login User
+description: Returns authorization tokens of a user if credentials are valid
+consumes:
+  - application/json
+produces:
+  - application/json
+parameters:
+  - name: user
+    in: body
+    description: The user being logged in, given valid credentials
+    schema:
+      type: object
+      properties:
+        email: 
+          type: string
+          description: The email associated with the requested user
+          example: example@the-calendar.io
+        password: 
+          type: string
+          description: The password to be verified against the requested user record.
+          example: "password1234"
+      required:
+        - email
+        - password
+responses:
+  200:
+    description: Success
+    schema:
+      type: object
+      properties:
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+  401:
+    description: Unauthorized
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+  500:
+    description: Error
+    schema:
+      type: string
+

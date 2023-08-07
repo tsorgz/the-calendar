@@ -1,9 +1,10 @@
 from flask import request
+from flasgger import swag_from
 from authorization.wrapper import requires_auth
 from db.queries import create_event
 import traceback
 
-
+@swag_from("/server/apidocs/event/index.yml")
 @requires_auth
 def event(user_id: str):
     """Endpoint function to create an event associated with the user.

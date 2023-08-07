@@ -1,0 +1,23 @@
+summary: Refresh Authorization Token
+description: Returns a new access token given a valid refresh token.
+consumes:
+  - application/json
+produces:
+  - application/json
+security:
+  - Bearer: []
+responses:
+  201:
+    description: Created
+    schema:
+      type: object
+      properties:
+        access_token:
+          type: string
+  401:
+    description: Unauthorized
+    schema:
+      type: object
+      properties:
+        message:
+          type: string

@@ -1,9 +1,10 @@
 from flask import request
+from flasgger import swag_from
 import traceback
 from db.queries import create_user
 from authorization.token import Token, generate_token
 
-
+@swag_from("/server/apidocs/auth/signup.yml")
 def signup():
     """Endpoint function to sign up a user.
 
@@ -37,7 +38,7 @@ def signup():
                     "refresh_token": refresh_token,
                 }, 201
 
-            return {"message": f"User already exists with email {email}"}, 401
+            return {"message": f"User already exists with email {email}"}, 409
 
         # TODO: Handle less generically, user will receive traceback on error.
         except Exception:

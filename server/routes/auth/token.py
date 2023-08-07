@@ -1,8 +1,9 @@
 from flask import request
+from flasgger import swag_from
 from jwt.exceptions import InvalidSignatureError
 from authorization.token import refresh_token
 
-
+@swag_from("/server/apidocs/auth/token.yml")
 def token():
     """Endpoint function to request a new access token.
 
@@ -28,4 +29,4 @@ def token():
         if expired:
             return {"message": "Token has expired, please log in again."}, 401
 
-        return {"access_token": new_token}
+        return {"access_token": new_token}, 201

@@ -1,12 +1,17 @@
 from logger import logger
 from flask import Flask
+from flasgger import Swagger
 from routes import blueprints
 
+SWAGGER_TEMPLATE = {
+    "securityDefinitions": {"Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}}
+}
 
 def create_app():
     """Creates Flask application context."""
 
     app = Flask(__name__)
+    Swagger(app, template=SWAGGER_TEMPLATE)
 
     # TODO: Utilitize this logic in future for nested blueprints.
     for bp, prefix in blueprints:
