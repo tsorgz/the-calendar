@@ -4,8 +4,11 @@ from routes import blueprints
 
 
 def create_app():
+    """Creates Flask application context."""
+
     app = Flask(__name__)
 
+    # TODO: Utilitize this logic in future for nested blueprints.
     for bp, prefix in blueprints:
         app.register_blueprint(bp, url_prefix=prefix)
 
