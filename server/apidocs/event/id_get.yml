@@ -1,0 +1,42 @@
+summary: Get Event
+description: Retrieves an event for a given user
+consumes:
+  - application/json
+produces:
+  - application/json
+security:
+  - Bearer: []
+parameters:
+  - name: id
+    in: path
+    description: The event ID
+    type: string
+responses:
+  200:
+    description: Success
+    schema:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        start_time: 
+          type: string
+        end_time:
+          type: string
+        description:
+          type: string
+        location:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+  204:
+    description: No Content
+  500:
+    description: Error
+    schema:
+      type: string
+

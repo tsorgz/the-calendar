@@ -1,0 +1,56 @@
+summary: Update Event
+description: Updates an event for a given user
+consumes:
+  - application/json
+produces:
+  - application/json
+security:
+  - Bearer: []
+parameters:
+  - name: id
+    in: path
+    description: The event ID
+    type: string
+  - name: event
+    in: body
+    description: The event being created by the user
+    schema:
+      type: object
+      properties:
+        title: 
+          type: string
+          description: The updated title of the event
+          example: My Example Event
+        start_time: 
+          type: string
+          description: The updated starting date and time of the event, following ISO 8601 standards
+          example: "2023-01-01T12:30:00-04:00"
+        end_time: 
+          type: string
+          description: The updated ending date and time of the event, following ISO 8601 standards
+          example: "2023-01-01T01:30:00-04:00"
+        description: 
+          type: string
+          description: The updated description of the event
+          example: This event is an example of how events are stored
+        location: 
+          type: string
+          description: The updated location of the event
+          example: via Zoom
+        timezone: 
+          type: string
+          description: The timezone override of the given start_time and end_time parameters, derived from the tz database, if either parameter is timezone-naive
+          example: America/New_York
+responses:
+  200:
+    description: Success
+    schema:
+      type: object
+      properties:
+        event_id:
+          type: string
+  500:
+    description: Error
+    schema:
+      type: string
+

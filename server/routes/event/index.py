@@ -5,8 +5,8 @@ from db.queries import create_event, get_event
 import traceback
 
 
-@swag_from("/server/apidocs/event/index_post.yml", methods=["POST"])
-@swag_from("/server/apidocs/event/index_get.yml", methods=["GET"])
+@swag_from("/apidocs/event/index_post.yml", methods=["POST"])
+@swag_from("/apidocs/event/index_get.yml", methods=["GET"])
 @requires_auth
 def event(user_id: str):
     """Endpoint function to create an event or retrieve events associated with the user.

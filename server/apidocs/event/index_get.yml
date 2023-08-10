@@ -19,7 +19,7 @@ parameters:
     maximum: 100
 responses:
   200:
-    description: Created
+    description: Success
     schema:
       type: array
       items:

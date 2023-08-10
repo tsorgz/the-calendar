@@ -1,0 +1,28 @@
+summary: Delete Event
+description: Retrieves an event for a given user
+consumes:
+  - application/json
+produces:
+  - application/json
+security:
+  - Bearer: []
+parameters:
+  - name: id
+    in: path
+    description: The event ID
+    type: string
+responses:
+  200:
+    description: Success
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+  204:
+    description: No Content
+  500:
+    description: Error
+    schema:
+      type: string
+

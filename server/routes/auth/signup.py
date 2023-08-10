@@ -5,7 +5,7 @@ from db.queries import create_user
 from authorization.token import Token, generate_token
 
 
-@swag_from("/server/apidocs/auth/signup.yml")
+@swag_from("/apidocs/auth/signup.yml")
 def signup():
     """Endpoint function to sign up a user.
 
